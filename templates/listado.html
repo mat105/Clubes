@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>Busca tu Club</h1>
+<form action="clubes" method="get">
+    <fieldset>
+        <legend>Busqueda</legend>
+        <div class="row responsive-label">
+        <div class="col-sm-12 col-md-3">
+        <label for="nomb">Nombre</label>
+        </div>
+        <div class="col-sm-12 col-md">
+        <input type="text" value="{{ nombre }}" id="nomb" name="nombre" style="width:85%;">
+        </div>
+        </div>
+        <div class="row responsive-label">
+        <div class="col-sm-12 col-md-3">
+        <label for="select">Barrio</label>
+        </div>
+        <div class="col-sm-12 col-md">
+        <select id="select" name="barrio">
+            {% for barr in opbarrios %} <option {% if barr==barrio %} selected="selected" {% endif %} > {{ barr }} </option> {% endfor %}
+        </select>
+        </div>
+        </div>
+        <div class="row responsive-label">
+        <div class="col-sm-12 col-md-3">
+        <label for="activs">Actividades</label>
+        </div>
+        <div class="col-sm-12 col-md">
+        <input type="text" value="{{ actividades }}" id="activs" name="actividades" style="width:85%;">
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 col-md col-md-offset-5">
+        <input type="submit" id="subm" value="Buscar" style="width:20%;">
+        </div>
+        </div>
+    </fieldset>
+</form>
+<div id="iclubes">
+    <ul>
+    {% for club in clubes %}
+    <li> <a href="clubes/{{ club.id }}">{{ club.nombre }}</a> </li>
+    {% endfor %}
+    </ul>
+</div>
+<div id="ipage" class="container">
+<div class="row">
+{% for pag in range(paginas) %} <a href="clubes?{{ querystring }}&p={{ pag }}"> {{ pag+1 }}-  </a> {% endfor %}
+</div>
+{% endblock %}
