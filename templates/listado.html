@@ -37,15 +37,37 @@
         </div>
     </fieldset>
 </form>
-<div id="iclubes">
+<div id="ipage" class="container">
+<div id="iclubes" style="border-style:double">
+    <div class="row">
     <ul>
     {% for club in clubes %}
+    <div class="col-sm">
     <li> <a href="clubes/{{ club.id }}">{{ club.nombre }}</a> </li>
+    </div>
     {% endfor %}
     </ul>
+    </div>
+</div>
 </div>
 <div id="ipage" class="container">
 <div class="row">
-{% for pag in range(paginas) %} <a href="clubes?{{ querystring }}&p={{ pag }}"> {{ pag+1 }}-  </a> {% endfor %}
+<div class="col-sm-1">
+<a href="clubes?{{ querystring }}&p={{ 0 }}"> Primera </a>
+</div>
+{% for pag in range(quepagina-2, quepagina+3) %} 
+{% if pag >= 0 and pag <= paginas %}
+<div class="col-sm-1">
+{% if pag != quepagina %}
+<a href="clubes?{{ querystring }}&p={{ pag }}"> {{ pag+1 }}</a>
+{% else %}
+<strong>[{{ pag+1 }}]</strong>
+{% endif %}
+</div>
+{% endif %}
+{% endfor %}
+<div class="col-sm-1">
+<a href="clubes?{{ querystring }}&p={{ paginas }}"> Ultima </a>
+</div>
 </div>
 {% endblock %}

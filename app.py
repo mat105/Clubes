@@ -6,12 +6,15 @@ from models import Club
 
 #barrios = None
 
+CLUBES_POR_PAGINA = 15
+
 @app.route('/clubes', methods=["GET"])
 def listado_clubes():
     nombre = flask.request.args.get("nombre")
     actividades = flask.request.args.get("actividades")
     barrio = flask.request.args.get("barrio")
     pagina = flask.request.args.get("p")
+    ipagina = 0
     
 
     clubs = Club.query
@@ -31,21 +34,23 @@ def listado_clubes():
     else:
         barrio = ""
 
+    cant_pags = clubs.count()//CLUBES_POR_PAGINA
 
     if pagina != None and len(pagina) > 0:
         ipagina = int(pagina)
-        cant_pags = clubs.count()//20
+        #cant_pags = clubs.count()//20
         if ipagina < 0 or ipagina > cant_pags:
             flask.abort(404)
-        else:
-            ipagina = 20 * ipagina
-        clubs = clubs.filter(Club.id > ipagina)
-    else:
-        cant_pags = clubs.count()//20
+        
+        idpag = CLUBES_POR_PAGINA * ipagina
+        clubs = clubs.filter(Club.id > idpag)
+    #else:
+        #cant_pags = clubs.count()//20
 
-    clubs = clubs.limit(20).all()
+    
+    clubs = clubs.limit(CLUBES_POR_PAGINA).all()
     querystr = "nombre={}&actividades={}&barrio={}".format(nombre,actividades,barrio)
-    return flask.render_template("listado.html", clubes=clubs, nombre=nombre, actividades=actividades, barrio=barrio, opbarrios=barrios, querystring=querystr, paginas=cant_pags)
+    return flask.render_template("listado.html", clubes=clubs, nombre=nombre, actividades=actividades, barrio=barrio, opbarrios=barrios, querystring=querystr, quepagina=ipagina, paginas=cant_pags)
 
 @app.route('/clubes/<int:id>', methods=["GET"])
 def info_club(id):
