@@ -56,7 +56,7 @@ def listado_clubes():
 def info_club(id):
     club = Club.query.get(id)
 
-    return club.nombre
+    return flask.render_template("infoclub.html", club=club)
 
 @app.route('/', methods=["GET"])
 def home():

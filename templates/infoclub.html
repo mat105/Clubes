@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+{% block headcontent %}
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<style>#map{ height: 400px }</style>
+{% endblock %}
+{% block content %}
+
+<table>
+  <caption>{{ club.nombre }}</caption>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Barrio</th>
+      <th>Direccion</th>
+      <th>Email</th>
+      <th>Telefono</th>
+      <th>Web</th>
+      <th>Actividades</th>
+      <th>Instalaciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Nombre">{{ club.nombre }}</td>
+      <td data-label="Barrio">{{ club.barrio }}</td>
+      <td data-label="Direccion">{{ club.direccion }}</td>
+      <td data-label="Email">{{ club.email }}</td>
+      <td data-label="Telefono">{{ club.telefono }}</td>
+      <td data-label="Web">{{ club.web }}</td>
+      <td data-label="Actividades">{{ club.actividades }}</td>
+      <td data-label="Instalaciones">{{ club.instalaciones }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container">
+    <div class="row">
+    <div class="col-sm">
+    <div id="map">
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+var map = L.map('map').setView([{{club.pos_x}}, {{club.pos_y}}], 13);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.marker([{{club.pos_x}}, {{club.pos_y}}]).addTo(map)
+    .bindPopup('{{club.nombre}}.<br>{{club.direccion}}')
+    .openPopup();
+</script>
+{% endblock %}
+
